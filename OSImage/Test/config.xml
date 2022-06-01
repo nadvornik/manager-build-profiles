@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="6.1" name="Test">
+    <description type="system">
+        <author>Admin User</author>
+        <contact>noemail@example.com</contact>
+        <specification>Test for various image types. The image is not expected to run.</specification>
+    </description>
+
+    <profiles>
+	<profile name="retail" description="retail"/>
+	<profile name="retail-compressed" description="retail-compressed"/>
+	<profile name="oem" description="oem"/>
+	<profile name="oem-installiso" description="oem-installiso"/>
+	<profile name="vdi" description="vdi"/>
+	<profile name="qcow" description="qcow"/>
+	<profile name="vmdk" description="vmdk"/>
+	<profile name="iso-hybrid" description="iso-hybrid"/>
+    </profiles>
+
+    <preferences profiles="retail">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+
+        <locale>en_US</locale>
+
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <type filesystem="ext3" image="pxe" initrd_system="dracut"></type>
+    </preferences>
+
+    <preferences profiles="retail-compressed">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+
+        <locale>en_US</locale>
+
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <type filesystem="ext3" image="pxe" initrd_system="dracut" compressed="true"></type>
+    </preferences>
+
+    <preferences profiles="oem">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <locale>en_US</locale>
+        <type
+            image="oem"
+            initrd_system="dracut"
+            filesystem="btrfs"
+            bootloader="grub2"
+            bootloader_console="gfxterm"
+            firmware="uefi"
+            kernelcmdline="console=ttyS0,115200 console=tty0 quiet net.ifnames=0 \$ignition_firstboot"
+            bootpartition="false"
+            bootkernel="custom"
+            devicepersistency="by-uuid"
+            btrfs_root_is_snapshot="true"
+            btrfs_root_is_readonly_snapshot="true"
+            btrfs_quota_groups="true"
+        >
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+		<!-- on tmpfs jsc#SMO-2                <volume name="tmp"/> -->
+ 		<volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="boot/writable"/>
+		<volume name="usr/local"/>
+		<volume name="var" copy_on_write="false"/>
+            </systemdisk>
+        </type>
+    </preferences>
+
+    <preferences profiles="oem-installiso">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <locale>en_US</locale>
+        <type
+            image="oem"
+            installiso="true"
+            initrd_system="dracut"
+            filesystem="btrfs"
+            bootloader="grub2"
+            bootloader_console="gfxterm"
+            firmware="uefi"
+            kernelcmdline="console=ttyS0,115200 console=tty0 quiet net.ifnames=0 \$ignition_firstboot"
+            bootpartition="false"
+            bootkernel="custom"
+            devicepersistency="by-uuid"
+            btrfs_root_is_snapshot="true"
+            btrfs_root_is_readonly_snapshot="true"
+            btrfs_quota_groups="true"
+        >
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+		<!-- on tmpfs jsc#SMO-2                <volume name="tmp"/> -->
+ 		<volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="boot/writable"/>
+		<volume name="usr/local"/>
+		<volume name="var" copy_on_write="false"/>
+            </systemdisk>
+        </type>
+    </preferences>
+
+    <preferences profiles="vdi">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <locale>en_US</locale>
+        <type
+            image="vmx"
+            filesystem="btrfs"
+            format="vdi"
+            bootloader="grub2"
+            bootloader_console="gfxterm"
+            firmware="uefi"
+            kernelcmdline="console=ttyS0,115200 console=tty0 quiet net.ifnames=0 \$ignition_firstboot ignition.platform.id=virtualbox"
+            bootpartition="false"
+            bootkernel="custom"
+            devicepersistency="by-uuid"
+            btrfs_root_is_snapshot="true"
+            btrfs_root_is_readonly_snapshot="true"
+            btrfs_quota_groups="true"
+            spare_part="5G" spare_part_mountpoint="/var" spare_part_fs="btrfs" spare_part_is_last="true" spare_part_fs_attributes="no-copy-on-write"
+        >
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+		<!-- on tmpfs jsc#SMO-2                <volume name="tmp"/> -->
+                <volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="boot/writable"/>
+                <volume name="usr/local"/>
+            </systemdisk>
+            <size unit="G">24</size>
+            <machine memory="1024" HWversion="10" guestOS="suse-64"/>
+        </type>
+    </preferences>
+
+    <preferences profiles="qcow">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <locale>en_US</locale>
+        <type
+            image="vmx"
+            format="qcow2"
+            filesystem="btrfs"
+            bootloader="grub2"
+            bootloader_console="gfxterm"
+            firmware="uefi"
+            kernelcmdline="console=ttyS0,115200 console=tty0 quiet net.ifnames=0 \$ignition_firstboot ignition.platform.id=qemu"
+            bootpartition="false"
+            bootkernel="custom"
+            devicepersistency="by-uuid"
+            btrfs_root_is_snapshot="true"
+            btrfs_root_is_readonly_snapshot="true"
+            btrfs_quota_groups="true"
+            spare_part="5G" spare_part_mountpoint="/var" spare_part_fs="btrfs" spare_part_is_last="true" spare_part_fs_attributes="no-copy-on-write"
+        >
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+		<!-- on tmpfs jsc#SMO-2                <volume name="tmp"/> -->
+ 		<volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="boot/writable"/>
+		<volume name="usr/local"/>
+            </systemdisk>
+        </type>
+    </preferences>
+
+    <preferences profiles="vmdk">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <locale>en_US</locale>
+        <type
+            image="oem"
+            format="vmdk"
+            initrd_system="dracut"
+            filesystem="btrfs"
+            bootloader="grub2"
+            bootloader_console="gfxterm"
+            firmware="uefi"
+            kernelcmdline="console=ttyS0,115200 console=tty0 quiet net.ifnames=0 \$ignition_firstboot"
+            bootpartition="false"
+            bootkernel="custom"
+            devicepersistency="by-uuid"
+            btrfs_root_is_snapshot="true"
+            btrfs_root_is_readonly_snapshot="true"
+            btrfs_quota_groups="true"
+        >
+            <systemdisk>
+                <volume name="home"/>
+                <volume name="root"/>
+		<!-- on tmpfs jsc#SMO-2                <volume name="tmp"/> -->
+ 		<volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="boot/grub2/x86_64-efi" mountpoint="boot/grub2/x86_64-efi"/>
+                <volume name="boot/writable"/>
+		<volume name="usr/local"/>
+		<volume name="var" copy_on_write="false"/>
+            </systemdisk>
+        </type>
+    </preferences>
+
+    <preferences profiles="iso-hybrid">
+        <version>7.0.0</version>
+        <packagemanager>zypper</packagemanager>
+        <bootsplash-theme>SLE</bootsplash-theme>
+        <bootloader-theme>SLE</bootloader-theme>
+
+        <locale>en_US</locale>
+
+        <rpm-excludedocs>true</rpm-excludedocs>
+        <type image="iso" primary="true" flags="overlay" hybridpersistent_filesystem="ext4" hybridpersistent="true"/>
+    </preferences>
+
+    <repository type="rpm-md">  <!-- product -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Product-SLES/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Product-SLES/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- base system -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Basesystem/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update/"/>
+    </repository>
+    <repository type="rpm-md">  <!-- development tools -->
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Module-Development-Tools/15-SP3/x86_64/product/"/>
+    </repository>
+    <repository type="rpm-md">
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Development-Tools/15-SP3/x86_64/update/"/>
+    </repository>
+
+    <packages type="image">
+        <package name="kernel-default"/>
+    </packages>
+    <packages type="image" profiles="oem,vdi,qcow,vmdk,oem-installiso">
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="grub2"/>
+        <package name="grub2-x86_64-efi"/>
+    </packages>
+    <packages type="image" profiles="oem-installiso">
+        <package name="iproute2"/>
+        <package name="wicked"/>
+        <package name="dracut-kiwi-oem-dump"/>
+    </packages>
+    <packages type="image" profiles="iso-hybrid">
+        <package name="dracut-kiwi-live"/>
+        <package name="iproute2"/>
+        <package name="wicked"/>
+        <package name="syslinux"/>
+    </packages>
+    <packages type="bootstrap">
+        <package name="sles-release"/>
+        <package name="filesystem"/>
+        <package name="glibc-locale-base"/>
+    </packages>
+</image>
